@@ -3,18 +3,18 @@ from os import path, getcwd
 
 
 def main():
-    vpath = input("ファイルの仮想パス：")
-    apath = path.join(getcwd(), vpath)
-    fname_splited = path.splitext(path.basename(apath))
+    fname = input("ファイル：")
+    abs_path = path.abspath(fname)
+    fname_splited = path.splitext(path.basename(abs_path))
 
-    if not path.exists(apath):
+    if not path.exists(abs_path):
         print("指定されたファイルが見つかりません。")
         return
 
-    wb_origin: Workbook = load_workbook(apath, read_only=True, keep_vba=True, keep_links=True)
+    wb_origin: Workbook = load_workbook(abs_path, read_only=True, keep_vba=True, keep_links=True)
 
     for ws_name in wb_origin.sheetnames:
-        wb: Workbook = load_workbook(apath)
+        wb: Workbook = load_workbook(abs_path)
         for ws in wb.worksheets:
             if ws.title != ws_name:
                 wb.remove(ws)
